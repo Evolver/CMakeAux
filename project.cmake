@@ -181,7 +181,7 @@ function( source_add_compile_definition SourceFile Definition )
         list( APPEND SOURCE_COMPILE_DEFINITIONS "${ARGV${ARG_INDEX}}" )
     endforeach()
 
-    set_source_file_properties( "${SourceFile}" PROPERTIES COMPILE_DEFINITIONS "${SOURCE_COMPILE_DEFINITIONS}" )
+    set_source_files_properties( "${SourceFile}" PROPERTIES COMPILE_DEFINITIONS "${SOURCE_COMPILE_DEFINITIONS}" )
 endfunction()
 
 # Adds GNU-specific compile flags that enable essential warnings and
