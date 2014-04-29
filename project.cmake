@@ -165,6 +165,25 @@ function( target_add_link_flag TargetName LinkFlag )
         set_target_properties( "${TargetName}" PROPERTIES LINK_FLAGS "${TARG_LINK_FLAGS}" )
 endfunction()
 
+# Adds one or more preprocessor constants to the source file.
+# Definition format for constants with no value: <CONSTANT_NAME>.
+# Definition format for constants with a value: <CONSTANT_NAME>=<VALUE>.
+# synopsis: fn( SourceFile Definition [Definition...] )
+function( source_add_compile_definition SourceFile Definition )
+    get_source_file_property( SOURCE_COMPILE_DEFINITIONS "${SourceFile}" COMPILE_DEFINITIONS )
+
+    if( NOT SOURCE_COMPILE_DEFINITIONS )
+        set( SOURCE_COMPILE_DEFINITIONS "" )
+    endif()
+
+    foreach( DEF_NR RANGE 2 ${ARGC} )
+        math( EXPR ARG_INDEX "${DEF_NR} - 1" )
+        list( APPEND SOURCE_COMPILE_DEFINITIONS "${ARGV${ARG_INDEX}}" )
+    endforeach()
+
+    set_source_file_properties( "${SourceFile}" PROPERTIES COMPILE_DEFINITIONS "${SOURCE_COMPILE_DEFINITIONS}" )
+endfunction()
+
 # Adds GNU-specific compile flags that enable essential warnings and
 # turn them into errors
 function( target_add_cxx_gnu_warnings TargetName )
