@@ -217,6 +217,8 @@ function( target_add_cxx_clang_warnings TargetName )
 		-Wno-weak-vtables
         # Don't warn about noreturn attribute missing on potential candidates
         -Wno-missing-noreturn
+        -Wno-documentation-unknown-command
+        -Wno-unused-macros
 	)
 endfunction()
 
