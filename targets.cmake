@@ -126,8 +126,8 @@ function( target_add_link_flag TargetName LinkFlag )
 endfunction()
 
 # Adds target that generates output. Target's associated commands are
-# run only if output is not already present and all dependencies are
-# up to date. This is a hybrid add_custom_command() + add_custom_target()
+# run only if output is not already present or a dependency is out of
+# date. This is a hybrid add_custom_command() + add_custom_target()
 # to workaround add_custom_command() conflicts for generated files in
 # concurrent build environment.
 # See http://www.cmake.org/pipermail/cmake/2008-October/024491.html for
@@ -148,6 +148,11 @@ endfunction()
 #
 # For meaning of individual arguments refer to docs of add_custom_command()
 # and add_custom_target().
+#
+# NOTE: Make sure all targets / custom commands that depend on OUTPUT or
+# this target's Name list both OUTPUT and Name in DEPENDS. Listing Name
+# fixes parallel build issues and listing OUTPUT makes targets re-generate
+# only if dependent file changes.
 function( add_custom_output_target )
         set( REV_ARGV ${ARGV} )
         list( REVERSE REV_ARGV )
