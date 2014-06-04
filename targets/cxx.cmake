@@ -22,7 +22,7 @@ function( target_add_cxx_gnu_warnings TargetName )
     target_add_compile_flag( "${TargetName}"
                 -Wall -Wextra -Werror -Wformat -Wswitch-default -Wswitch-enum
                 -Wcast-qual -Wcast-align -Wlogical-op -Wredundant-decls
-                -Winline -Wstack-protector
+                -Wstack-protector
         )
 endfunction()
 
@@ -173,10 +173,20 @@ endfunction()
 function( target_auto_configure_cxx_max_optimization TargetName )
 
         if( BUILD_CXX_COMPILER_GNU )
-                target_add_compile_flag( "${TargetName}" -Os )
+                target_add_compile_flag( "${TargetName}"
+                    -Os -ffunction-sections -fdata-sections
+                )
+                target_add_link_flag( "${TargetName}"
+                    -Wl,--gc-sections
+                )
 
         elseif( BUILD_CXX_COMPILER_CLANG )
-                target_add_compile_flag( "${TargetName}" -Os )
+                target_add_compile_flag( "${TargetName}"
+                    -Os -ffunction-sections -fdata-sections
+                )
+                target_add_link_flag( "${TargetName}"
+                    -Wl,--gc-sections
+                )
 
         else()
                 message( FATAL_ERROR "Unsupported compiler ${CMAKE_CXX_COMPILER_ID}. Please configure." )
