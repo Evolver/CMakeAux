@@ -40,13 +40,15 @@ endfunction()
 function( source_add_compile_flag SourceFile Flag )
     get_source_file_property( SOURCE_COMPILE_FLAGS "${SourceFile}" COMPILE_FLAGS )
 
-    if( NOT SOURCE_COMPILE_FLAGS )
-        set( SOURCE_COMPILE_FLAGS "" )
-    endif()
-
     foreach( FLAG_NR RANGE 2 ${ARGC} )
         math( EXPR ARG_INDEX "${FLAG_NR} - 1" )
-        list( APPEND SOURCE_COMPILE_FLAGS "${ARGV${ARG_INDEX}}" )
+        set( CompileFlag "${ARGV${ARG_INDEX}}" )
+
+        if( NOT SOURCE_COMPILE_FLAGS )
+            set( SOURCE_COMPILE_FLAGS "${CompileFlag}" )
+        else()
+            set( SOURCE_COMPILE_FLAGS "${SOURCE_COMPILE_FLAGS} ${CompileFlag}" )
+        endif()
     endforeach()
 
     set_source_files_properties( "${SourceFile}" PROPERTIES COMPILE_FLAGS "${SOURCE_COMPILE_FLAGS}" )
